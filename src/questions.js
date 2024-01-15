@@ -1,17 +1,22 @@
 export const QUESTIONS = [
-    {
-        question: 'answer is a',
-        choices: ['a','b','c','d'],
-        answer: 'a'
-    },
-    {
-        question: 'answer is b',
-        choices: ['a','b','c','d'],
-        answer: 'b'
-    },
-    {
-        question: 'answer is c',
-        choices: ['a','b','c','d'],
-        answer: 'c'
-    }
-]
+  {
+    question: "What is React?",
+    choices: [
+      "A programming language",
+      "JavaScript library for building user interfaces",
+      "An operating system",
+      "A database management system",
+    ],
+    answer: "JavaScript library for building user interfaces",
+  },
+  {
+    question: "answer is b",
+    choices: ["a", "b", "c", "d"],
+    answer: "b",
+  },
+  {
+    question: "answer is c",
+    choices: ["a", "b", "c", "d"],
+    answer: "c",
+  },
+];

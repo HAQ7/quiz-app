@@ -1,9 +1,9 @@
 import Card from "./Card.jsx";
 import play from "../assets/play.svg";
 import playFilled from "../assets/playFilled.svg";
-import question from "../assets/question.svg";
 import { useEffect, useRef, useState } from "react";
 import Button from "./Button.jsx";
+import react from '../assets/react.svg'
 
 export default function StartCard({ onStart }) {
   const [hasStarted, setHasStarted] = useState(false);
@@ -33,11 +33,13 @@ export default function StartCard({ onStart }) {
         <div
           className={`flex rounded-xl flex-col items-center shadow-none justify-center gap-5 w-full h-full`}
         >
-          <h1 className={`font-bold text-4xl text-center `}>Title For Quiz</h1>
+          <img className={`w-20`} src={react} alt=""/>
+          <h1 className={`font-bold text-4xl text-center `}>React Quiz</h1>
           <div className={` flex lg:flex-row flex-col gap-5`}>
             <Button
               text={`Easy`}
               hoverText={`Start ?`}
+              disabled={hasStarted}
               onClick={() => {
                 setHasStarted(true);
                 timeChosen.current = 20;
@@ -55,6 +57,7 @@ export default function StartCard({ onStart }) {
             <Button
               text={`Medium`}
               hoverText={`Start ?`}
+              disabled={hasStarted}
               onClick={() => {
                 setHasStarted(true);
                 timeChosen.current = 15;
@@ -72,6 +75,7 @@ export default function StartCard({ onStart }) {
             <Button
               text={`Hard`}
               hoverText={`Start ?`}
+              disabled={hasStarted}
               onClick={() => {
                 setHasStarted(true);
                 timeChosen.current = 10;

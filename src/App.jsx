@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
-import StartCard from './components/StartCard.jsx';
-import { QUESTIONS } from './questions.js';
-import QuestionCard from './components/QuestionCard.jsx';
-import TimerContext from './context/TimerContext.jsx';
+import { useRef, useState } from "react";
+import StartCard from "./components/StartCard.jsx";
+import { QUESTIONS } from "./questions.js";
+import QuestionCard from "./components/QuestionCard.jsx";
+import TimerContext from "./context/TimerContext.jsx";
 
 function App() {
   const [timer, setTimer] = useState(0);
@@ -11,7 +11,7 @@ function App() {
   return (
     <TimerContext.Provider value={timer}>
       <section
-        className={`grid place-items-center w-screen h-screen font-roboto`}
+        className={`grid place-items-center w-screen h-screen font-roboto overflow-hidden relative`}
       >
         <StartCard
           onStart={(time) => {
@@ -25,12 +25,13 @@ function App() {
                 questionNumber={index}
                 activeQuestion={activeQuestion}
                 question={question}
-                onClick={() => {
+                onQuestionEnd={(question) => {
+                  questionsAnswered.current.push(question);
                   setActiveQuestion((prevQuestion) => prevQuestion + 1);
                 }}
               ></QuestionCard>
             ))
-          : ''}
+          : ""}
       </section>
     </TimerContext.Provider>
   );
