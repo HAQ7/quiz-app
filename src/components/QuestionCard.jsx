@@ -45,9 +45,16 @@ export default function QuestionCard({
           timerInterval.current = setInterval(() => {
             time.current--;
             if (time.current === 0) {
+              setIsLoadingActive(false);
               clearInterval(timerInterval.current);
               setReadyToReveal(true);
-              setTimeout(onQuestionEnd, 2000);
+              setTimeout(() => {
+                onQuestionEnd({
+                  question: question.question,
+                  chosenAnswer: '',
+                  correctAnswer: question.answer,
+                });
+              }, 2000);
             }
           }, 1000);
         }
@@ -60,13 +67,13 @@ export default function QuestionCard({
   switch (activeQuestion) {
     case questionNumber:
       cardAnimation =
-        window.innerWidth > 1024
+        window.innerWidth >= 1024
           ? "animate-sendCardToFrontDesktop"
           : "animate-sendCardToFrontMobile";
       break;
     case questionNumber + 1:
       cardAnimation =
-        window.innerWidth > 1024
+        window.innerWidth >= 1024
           ? "animate-sendCardToBackDesktop"
           : "animate-sendCardToBackMobile";
       break;
@@ -81,7 +88,9 @@ export default function QuestionCard({
         className={` rounded-xl w-full h-full overflow-hidden xs:p-4 p-2`}
       >
         <LoadingBorder isLoadingActive={isLoadingActive}>
-          <div className={`grid place-items-center`}>
+          <div
+            className={`grid place-items-center font-bold sm:text-2xl xs:text-xl text-md text-center`}
+          >
             <motion.h1
               initial={{
                 opacity: 0,
@@ -113,7 +122,6 @@ export default function QuestionCard({
                 bounce: 0.25,
                 damping: 20,
               }}
-              className={`font-bold sm:text-2xl xs:text-lg text-md text-center`}
             >
               {question.question + ""}
             </motion.h1>
@@ -134,7 +142,7 @@ export default function QuestionCard({
                   bounce: 0.25,
                   damping: 20,
                 }}
-                className={`font-bold sm:text-2xl xs:text-lg text-md text-center absolute`}
+                className={`absolute`}
               >
                 Time is up !
               </motion.h1>

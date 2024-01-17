@@ -1,9 +1,10 @@
 import Card from "./Card.jsx";
 import play from "../assets/play.svg";
 import playFilled from "../assets/playFilled.svg";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "./Button.jsx";
-import react from '../assets/react.svg'
+import { motion } from "framer-motion";
+import ReactLogo from "./ReactLogo.jsx";
 
 export default function StartCard({ onStart }) {
   const [hasStarted, setHasStarted] = useState(false);
@@ -23,19 +24,39 @@ export default function StartCard({ onStart }) {
     <>
       <Card
         className={`z-10 ${
-          readyToSendBack && window.innerWidth > 1024
+          readyToSendBack && window.innerWidth >= 1024
             ? "animate-sendCardToBackDesktop"
-            : readyToSendBack && window.innerWidth < 1024
+            : readyToSendBack && window.innerWidth <= 1024
             ? "animate-sendCardToBackMobile"
             : ""
         }`}
       >
-        <div
+        <motion.div
+          animate={"visible"}
           className={`flex rounded-xl flex-col items-center shadow-none justify-center gap-5 w-full h-full`}
         >
-          <img className={`w-20`} src={react} alt=""/>
-          <h1 className={`font-bold text-4xl text-center `}>React Quiz</h1>
-          <div className={` flex lg:flex-row flex-col gap-5`}>
+          <ReactLogo hasStarted={hasStarted} />
+          <motion.h1
+            initial={{
+              opacity: 0,
+              y: 40,
+            }}
+            variants={{
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{delay:1}}
+            className={`font-bold text-4xl text-center `}
+          >
+            React Quiz
+          </motion.h1>
+          <motion.div
+            className={` flex lg:flex-row flex-col gap-5`}
+            variants={{
+              visible: {
+                transition: { staggerChildren: 0.1, delayChildren: 1.1 },
+              },
+            }}
+          >
             <Button
               text={`Easy`}
               hoverText={`Start ?`}
@@ -90,8 +111,8 @@ export default function StartCard({ onStart }) {
                 />
               </span>
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </Card>
       {!readyToSendBack && (
         <Card

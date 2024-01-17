@@ -3,6 +3,7 @@ import StartCard from "./components/StartCard.jsx";
 import { QUESTIONS } from "./questions.js";
 import QuestionCard from "./components/QuestionCard.jsx";
 import TimerContext from "./context/TimerContext.jsx";
+import FinalCard from "./components/FinalCard.jsx";
 
 function App() {
   const [timer, setTimer] = useState(0);
@@ -32,6 +33,7 @@ function App() {
               ></QuestionCard>
             ))
           : ""}
+          <FinalCard questionsAnswered={questionsAnswered.current}/>
       </section>
     </TimerContext.Provider>
   );
