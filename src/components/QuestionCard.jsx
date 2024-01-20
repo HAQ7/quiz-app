@@ -1,17 +1,23 @@
 import Card from "./Card.jsx";
 import Button from "./Button.jsx";
 import LoadingBorder from "./LoadingBorder.jsx";
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import TimerContext from "../context/TimerContext.jsx";
 import { motion } from "framer-motion";
 import check from "../assets/check.svg";
 import x from "../assets/x.svg";
+import { QUESTIONS } from "../questions.js";
+import returnArrow from "../assets/returnArrow.svg";
 
 export default function QuestionCard({
   questionNumber,
   activeQuestion,
   question,
   onQuestionEnd,
+  questionsAnswered,
+  hasFinished,
+  onReturnToFinalCard,
+  prevQuestion,
 }) {
   const [pickedAnswer, setPickedAnswer] = useState({});
   const [isLoadingActive, setIsLoadingActive] = useState(false);
@@ -38,7 +44,7 @@ export default function QuestionCard({
   };
 
   useEffect(() => {
-    if (questionNumber === activeQuestion) {
+    if (questionNumber === activeQuestion && !hasFinished) {
       setTimeout(() => {
         setIsLoadingActive(true);
         if (!timerInterval.current) {
@@ -51,7 +57,7 @@ export default function QuestionCard({
               setTimeout(() => {
                 onQuestionEnd({
                   question: question.question,
-                  chosenAnswer: '',
+                  chosenAnswer: "",
                   correctAnswer: question.answer,
                 });
               }, 2000);
@@ -64,33 +70,31 @@ export default function QuestionCard({
 
   let cardAnimation;
 
-  switch (activeQuestion) {
-    case questionNumber:
-      cardAnimation =
-        window.innerWidth >= 1024
-          ? "animate-sendCardToFrontDesktop"
-          : "animate-sendCardToFrontMobile";
-      break;
-    case questionNumber + 1:
-      cardAnimation =
-        window.innerWidth >= 1024
-          ? "animate-sendCardToBackDesktop"
-          : "animate-sendCardToBackMobile";
-      break;
-    default:
-      cardAnimation = "hidden";
+  if (activeQuestion === questionNumber) {
+    cardAnimation =
+      window.innerWidth >= 1024
+        ? "animate-sendCardToFrontDesktop"
+        : "animate-sendCardToFrontMobile";
+  } else if (prevQuestion === questionNumber) {
+    cardAnimation =
+      window.innerWidth >= 1024
+        ? "animate-sendCardToBackDesktop"
+        : "animate-sendCardToBackMobile";
+  } else {
+    cardAnimation = "hidden";
   }
 
   return (
     <Card className={cardAnimation}>
       <motion.div
-        animate={questionNumber <= activeQuestion ? "visible" : ""}
+        animate={questionNumber <= questionsAnswered.length || questionNumber === activeQuestion ? "visible" : ""}
         className={` rounded-xl w-full h-full overflow-hidden xs:p-4 p-2`}
       >
         <LoadingBorder isLoadingActive={isLoadingActive}>
           <div
-            className={`grid place-items-center font-bold sm:text-2xl xs:text-xl text-md text-center`}
+            className={`grid place-items-center font-bold sm:text-2xl xs:text-xl text-md text-center p-1`}
           >
+            {/*two different titles one for time is up the other is the default*/}
             <motion.h1
               initial={{
                 opacity: 0,
@@ -168,36 +172,71 @@ export default function QuestionCard({
                   visible: { opacity: 1, y: 0 },
                 }}
               >
-                <Button
-                  disabled={
-                    (choice !== pickedAnswer.answer && pickedAnswer.answer) ||
-                    !isLoadingActive
-                  }
-                  onClick={() => {
-                    handlePickedAnswer(choice);
-                  }}
-                >
-                  {choice === pickedAnswer.answer && (
-                    <LoadingBorder
-                      isLoadingActive={true}
-                      loadingSmall={true}
-                      time={0.5}
-                    >
+                {/*here we are checking if user came from final card or not if yes then only display correct and chosen answers*/}
+                {(((QUESTIONS.length !== questionsAnswered.length ||
+                  activeQuestion !== questionNumber) &&
+                  !hasFinished) ||
+                  (hasFinished &&
+                    (choice === question.answer ||
+                      choice === pickedAnswer.answer))) && (
+                  <Button
+                    disabled={
+                      (choice !== pickedAnswer.answer && pickedAnswer.answer) ||
+                      !isLoadingActive
+                    }
+                    onClick={() => {
+                      handlePickedAnswer(choice);
+                    }}
+                  >
+                    {choice === pickedAnswer.answer && (
+                      <LoadingBorder
+                        isLoadingActive={true}
+                        loadingSmall={true}
+                        time={0.5}
+                      >
+                        <motion.span
+                          className={"grid place-items-center"}
+                          animate={{
+                            color:
+                              readyToReveal && pickedAnswer.isItCorrect
+                                ? "#14532D"
+                                : readyToReveal
+                                ? "#7F1D1D"
+                                : "#000",
+                          }}
+                        >
+                          <motion.img
+                            initial={{ y: 100, rotate: 180 }}
+                            animate={
+                              readyToReveal
+                                ? {
+                                    y: window.innerWidth > 1024 ? 40 : 30,
+                                    rotate: 0,
+                                  }
+                                : {}
+                            }
+                            className={"absolute w-[30px]"}
+                            src={pickedAnswer.isItCorrect ? check : x}
+                            alt=""
+                          />
+                          {choice}
+                        </motion.span>
+                      </LoadingBorder>
+                    )}{" "}
+                    {choice !== pickedAnswer.answer && (
                       <motion.span
                         className={"grid place-items-center"}
                         animate={{
                           color:
-                            readyToReveal && pickedAnswer.isItCorrect
+                            readyToReveal && choice === question.answer
                               ? "#14532D"
-                              : readyToReveal
-                              ? "#7F1D1D"
                               : "#000",
                         }}
                       >
                         <motion.img
                           initial={{ y: 100, rotate: 180 }}
                           animate={
-                            readyToReveal
+                            readyToReveal && choice === question.answer
                               ? {
                                   y: window.innerWidth > 1024 ? 40 : 30,
                                   rotate: 0,
@@ -205,43 +244,25 @@ export default function QuestionCard({
                               : {}
                           }
                           className={"absolute w-[30px]"}
-                          src={pickedAnswer.isItCorrect ? check : x}
+                          src={check}
                           alt=""
                         />
                         {choice}
                       </motion.span>
-                    </LoadingBorder>
-                  )}{" "}
-                  {choice !== pickedAnswer.answer && (
-                    <motion.span
-                      className={"grid place-items-center"}
-                      animate={{
-                        color:
-                          readyToReveal && choice === question.answer
-                            ? "#14532D"
-                            : "#000",
-                      }}
-                    >
-                      <motion.img
-                        initial={{ y: 100, rotate: 180 }}
-                        animate={
-                          readyToReveal && choice === question.answer
-                            ? {
-                                y: window.innerWidth > 1024 ? 40 : 30,
-                                rotate: 0,
-                              }
-                            : {}
-                        }
-                        className={"absolute w-[30px]"}
-                        src={check}
-                        alt=""
-                      />
-                      {choice}
-                    </motion.span>
-                  )}
-                </Button>
+                    )}
+                  </Button>
+                )}{" "}
               </motion.div>
             ))}
+            {hasFinished && (
+              <Button
+                text={"Return"}
+                hoverText={"Confirm?"}
+                onClick={onReturnToFinalCard}
+              >
+                <img className={`w-8`} src={returnArrow} alt="" />
+              </Button>
+            )}
           </motion.div>
         </LoadingBorder>
       </motion.div>

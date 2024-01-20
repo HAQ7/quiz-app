@@ -13,7 +13,7 @@ export default function LoadingBorder({
       className={`grid place-items-center rounded-xl w-full h-full overflow-hidden`}
     >
       <div
-        className={`grid w-full h-full place-items-center bg-[#4B11AD] ${loadingSmall ? 'p-1' : 'p-2'} relative rounded-3xl group border-gray-200 `}
+        className={`grid w-full h-full place-items-center bg-[#4B11AD] ${loadingSmall ? 'p-1' : 'p-2'} relative rounded-3xl border-gray-200 `}
       >
         <motion.div
           initial={{ x: "-100%" }}
