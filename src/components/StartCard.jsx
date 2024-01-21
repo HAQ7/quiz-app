@@ -33,7 +33,7 @@ export default function StartCard({ onStart }) {
       >
         <motion.div
           animate={"visible"}
-          className={`flex rounded-xl flex-col items-center shadow-none justify-center gap-5 w-full h-full`}
+          className={`flex rounded-xl flex-col items-center shadow-none justify-start pt-4 gap-5 w-full h-full`}
         >
           <ReactLogo hasStarted={hasStarted} />
           <motion.h1

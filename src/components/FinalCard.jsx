@@ -59,7 +59,7 @@ export default function FinalCard({
       <motion.div
         animate={questionsAnswered.length === QUESTIONS.length ? "visible" : ""}
         transition={{ delayChildren: 1 }}
-        className={`grid place-items-center w-full h-full`}
+        className={`flex flex-col justify-start items-center gap-10 pt-10 w-full h-full`}
       >
         <div
           className={`flex sm:flex-row flex-col justify-center items-center font-bold text-4xl gap-20`}
