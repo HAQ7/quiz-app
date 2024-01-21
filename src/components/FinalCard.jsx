@@ -59,10 +59,10 @@ export default function FinalCard({
       <motion.div
         animate={questionsAnswered.length === QUESTIONS.length ? "visible" : ""}
         transition={{ delayChildren: 1 }}
-        className={`flex flex-col sm:justify-center justify-start items-center gap-10 pt-10 w-full h-full`}
+        className={`flex flex-col justify-center items-center gap-16 pt-10 w-full h-full`}
       >
         <div
-          className={`flex sm:flex-row flex-col justify-center items-center font-bold text-4xl gap-20`}
+          className={`flex sm:flex-row flex-col items-center font-bold text-4xl gap-16`}
         >
           <div className={`grid place-items-center`}>
             <motion.div
@@ -204,7 +204,9 @@ export default function FinalCard({
           </div>
         </div>
         <div>
-            <motion.div initial={{opacity: 0, y:-30}} variants={{visible: {opacity: 1, y: 0, transition:{delay: 2.5}}}} className={`font-bold text-3xl text-center`}>Questions:</motion.div>
+            <motion.div initial={{opacity: 0, y:-30}} variants={{visible: {opacity: 1, y: 0, transition:{delay: 4}}}} className={`font-bold text-3xl text-center`}>
+              Questions:
+            </motion.div>
           <motion.div
               className="w-full flex flex-wrap justify-center pt-2 gap-0.5"
               variants={{
