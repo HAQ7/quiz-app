@@ -96,9 +96,9 @@ export default function QuestionCard({
         className={` rounded-xl w-full h-full overflow-hidden xs:p-4 p-2`}
       >
         <LoadingBorder isLoadingActive={isLoadingActive}>
-          <div className='w-full h-full flex flex-col items-center justify-start gap-3'>
+          <div className='w-full h-full flex flex-col items-center sm:justify-center justify-start gap-3'>
             <div
-              className={`grid place-items-center mt-5 font-bold sm:text-2xl xs:text-xl text-md text-center p-1`}
+              className={`grid place-items-center font-bold sm:text-2xl xs:text-xl text-md text-center p-1`}
             >
               {/*two different titles one for time is up the other is the default*/}
               <motion.h1

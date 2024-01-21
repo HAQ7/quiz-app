@@ -11,7 +11,7 @@ export const QUESTIONS = [
   },
   {
     question:
-      "In React, how can you pass data from a parent component to a child component?",
+      "In React, how can you pass data from a parent to a child component?",
     choices: [
       "Using 'setState'",
       "Using 'props'",
