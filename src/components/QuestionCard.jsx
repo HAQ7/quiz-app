@@ -264,7 +264,7 @@ export default function QuestionCard({
               {hasFinished && (
                 <Button
                   text={'Return'}
-                  hoverText={'Confirm?'}
+                  hoverText={'Confirm'}
                   onClick={onReturnToFinalCard}
                 >
                   <img className={`w-8`} src={returnArrow} alt="" />

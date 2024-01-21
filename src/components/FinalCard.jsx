@@ -221,7 +221,7 @@ export default function FinalCard({
                 <Button
                     key={key}
                     text={key + 1}
-                    hoverText={"view?"}
+                    hoverText={"view"}
                     isCorrect={
                       question.chosenAnswer === question.correctAnswer
                           ? "CORRECT"
